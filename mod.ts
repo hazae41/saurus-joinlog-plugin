@@ -2,10 +2,8 @@ import type { Player } from "saurus/player.ts";
 import type { Server } from "saurus/server.ts";
 
 const config = {
-  join: (p: Player) =>
-    `${p.name} joined the game`,
-  quit: (p: Player) =>
-    `${p.name} left the game`
+  join: (p: Player) => `${p.name} joined the game`,
+  quit: (p: Player) => `${p.name} left the game`
 }
 
 export class JoinLog {
