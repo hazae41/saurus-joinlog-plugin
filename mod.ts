@@ -26,8 +26,8 @@ export class ServerJoinLog {
   config = {
     connect: (server: Server) =>
       `${server.name} connected`,
-    disconnect: (server: Server, reason: string) =>
-      `${server.name} disconnected (${reason})`,
+    disconnect: (server: Server, reason?: string) =>
+      `${server.name} disconnected (${reason || "Unknown"})`,
   }
 
   /**
