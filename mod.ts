@@ -2,7 +2,7 @@ import type { Player } from "saurus/player.ts";
 import type { Server } from "saurus/server.ts";
 
 export class PlayerJoinLog {
-  config = {
+  readonly config = {
     join: (p: Player) => `${p.name} joined the game`,
     quit: (p: Player) => `${p.name} left the game`
   }
@@ -11,19 +11,18 @@ export class PlayerJoinLog {
    * Plugin that logs when a player join/leave a given server.
    * @param server Server to enable the plugin on
    */
-  constructor(readonly server: Server) {
-    const offjoin = server.players.on(["join"],
-      (p) => console.log(this.config.join(p)))
+  constructor(readonly player: Player) {
+    const { config } = this
 
-    const offquit = server.players.on(["quit"],
-      (p) => console.log(this.config.quit(p)))
+    console.log(config.join(player))
 
-    server.once(["close"], offjoin, offquit)
+    player.once(["quit"], () =>
+      console.log(config.quit(player)))
   }
 }
 
 export class ServerJoinLog {
-  config = {
+  readonly config = {
     connect: (server: Server) =>
       `${server.name} connected`,
     disconnect: (server: Server, reason?: string) =>
@@ -35,9 +34,11 @@ export class ServerJoinLog {
    * @param server Server you want to activate the plugin on
    */
   constructor(server: Server) {
-    console.log(this.config.connect(server))
+    const { config } = this;
+
+    console.log(config.connect(server))
 
     server.once(["close"], (e) =>
-      console.log(this.config.disconnect(server, e.reason)))
+      console.log(config.disconnect(server, e.reason)))
   }
 }
